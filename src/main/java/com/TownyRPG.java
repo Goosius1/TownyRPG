@@ -1,12 +1,14 @@
 package com;
 
+import com.listeners.SafeModeListener;
 import com.palmergames.bukkit.util.Version;
+import com.settings.Settings;
+import com.tasks.DynmapTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.dynmap.DynmapAPI;
-import com.settings.Settings;
+import org.dynmap.DynmapAPI;;
 
 import java.io.File;
 
@@ -48,39 +50,23 @@ public class TownyRPG extends JavaPlugin {
         	TownyRPGController.loadAll();
 
 		if(isError) {
-			System.err.println(prefix + "TownyRPG is in safe mode. Dynmap integration disabled.");
+			System.err.println(prefix + "Plugin is in safe mode. Dynmap integration disabled.");
 		} else {
 			Plugin dynmap = Bukkit.getPluginManager().getPlugin("dynmap");
 			if (dynmap != null) {
-				System.out.println(prefix + "SiegeWar found Dynmap plugin, enabling Dynmap support.");
+				System.out.println(prefix + "TownyRPG found Dynmap plugin, enabling Dynmap support.");
 				DynmapTask.setupDynmapAPI((DynmapAPI) dynmap);
 			} else {
 				System.out.println(prefix + "Dynmap plugin not found.");
 			}
 		}
 
-		if(isError) {
-			System.err.println(prefix + "SiegeWar is in safe mode. Cannons integration disabled.");
-		} else {
-			Plugin cannons = Bukkit.getPluginManager().getPlugin("Cannons");
-			if (cannons != null) {
-				cannonsPluginDetected = true;
-				if (SiegeWarSettings.isCannonsIntegrationEnabled()) {
-					System.out.println(prefix + "SiegeWar found Cannons plugin, enabling Cannons support.");
-					System.out.println(prefix + "Cannons support enabled.");
-				}
-			} else {
-				cannonsPluginDetected = false;
-				System.out.println(prefix + "Cannons plugin not found.");
-			}
-		}
-
 		registerListeners();
 
 		if(isError) {
-			System.err.println(prefix + "SiegeWar did not load successfully, and is now in safe mode.");
+			System.err.println(prefix + "Plugin did not load successfully, and is now in safe mode.");
 		} else {
-			System.out.println(prefix + "SiegeWar loaded successfully.");
+			System.out.println(prefix + "Plugin loaded successfully.");
 		}
     }
     
@@ -106,25 +92,26 @@ public class TownyRPG extends JavaPlugin {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		
 		if (isError)
-			pm.registerEvents(new SiegeWarSafeModeListener(), this);
+			pm.registerEvents(new SafeModeListener(), this);
 		else {
-			pm.registerEvents(new SiegeWarActionListener(this), this);
-			pm.registerEvents(new SiegeWarBukkitEventListener(this), this);		
-			pm.registerEvents(new SiegeWarTownyEventListener(this), this);
-			pm.registerEvents(new SiegeWarNationEventListener(this), this);
-			pm.registerEvents(new SiegeWarTownEventListener(this), this);
-			pm.registerEvents(new SiegeWarPlotEventListener(this), this);
-			if(cannonsPluginDetected)
-				pm.registerEvents(new SiegeWarCannonsListener(this), this);
+
+
+			//pm.registerEvents(new SiegeWarActionListener(this), this);
+			//pm.registerEvents(new SiegeWarBukkitEventListener(this), this);
+			//pm.registerEvents(new SiegeWarTownyEventListener(this), this);
+			//pm.registerEvents(new SiegeWarNationEventListener(this), this);
+			//pm.registerEvents(new SiegeWarTownEventListener(this), this);
+			//pm.registerEvents(new SiegeWarPlotEventListener(this), this);
 		}
 	}
 
 	private void registerCommands() {
 		if(isError) {
-			System.err.println(prefix + "SiegeWar is in safe mode. SiegeWar commands not registered");
+			System.err.println(prefix + "Plugin is in safe mode. Commands not registered");
 		} else {
-			getCommand("siegewar").setExecutor(new SiegeWarCommand());
-			getCommand("siegewaradmin").setExecutor(new SiegeWarAdminCommand());
+			//Register rpg  and rpga  commands
+			//getCommand("siegewar").setExecutor(new SiegeWarCommand());
+			//getCommand("siegewaradmin").setExecutor(new SiegeWarAdminCommand());
 		}
 	}
 

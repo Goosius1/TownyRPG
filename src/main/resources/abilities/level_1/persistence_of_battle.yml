@@ -1,0 +1,15 @@
+type: "ability"
+cast_time_seconds: 5
+buff: true  
+Range: 0
+Area_of_effect: "self"
+duration_seconds: 60
+cooldown_duration: 600
+dispellable: false
+Effects: 
+  - "persistence 1"
+visual_effects:
+    caster_location_while_casting:  "red_particles"
+    cast_location_while_casting: ""
+    effect_location: "red firework"
+

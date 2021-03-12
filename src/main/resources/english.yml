@@ -1,0 +1,52 @@
+name: SiegeWar
+version: 0.14
+language: english
+author: Goosius
+website: 'http://townyadvanced.github.io/'
+description: >
+    Language file for all game messages.  Do not alter this file.
+    If you wish to change any of the entries, make a copy named something else.
+    Alternate language files can be enabled by altering the
+    [language] entry in config.yml
+#
+#
+#         You MUST retain spacing in the texts.
+#  If a text begins or ends with a space, it must remain that way.
+#
+#
+#       %s = data to be supplied by the plugin.
+
+# Text colouring
+# --------------
+# Black = &0, Navy = &1, Green = &2, Blue = &3, Red = &4
+# Purple = &5, Gold = &6, LightGray = &7, Gray = &8
+# DarkPurple = &9, LightGreen = &a, LightBlue = &b
+# Rose = &c, LightPurple = &d, Yellow = &e, White = &f
+
+plugin_prefix: '&f[&6TownyRPG&f] '
+msg_err_command_disable: '&cYou don''t have enough permissions for that command.'
+
+#Added in 0.0.1
+faction_1_name: "Good"
+faction_1_description: ""
+faction_2_name: "Evil"
+faction_2_description: ""
+
+race_dwarf_name: "Dwarf"
+race_dwarf_description: ""
+race_elf_name: "Elf"
+race_elf_description: ""
+race_hobbit_name: "Hobbit"
+race_hobbit_description: ""
+
+class_archer_name: "Archer"
+class_archer_description: ""
+
+ability_hide_name: "Hide"
+ability_hide_descripion: ""
+ability_persistence_of_battle_name: "Persistence of Battle"
+ability_persistence_of_battle_description: ""
+ability_inferno_of_the_goose: "Inferno of The Goose"
+ability_inferno_of_the_goose_description: ""
+
+

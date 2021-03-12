@@ -1,0 +1,21 @@
+type: "ritual"
+cast_time_seconds: 7200
+
+#or whatever is 1 hour
+cooldown_duration_seconds: 4000000
+buff: false
+range: "nearby_town"
+area_of_effect: "town"
+
+#or whatever is 3 hours
+effect_duration_seconds: 600000
+
+dispellable: false
+
+#or maybe not grow at all????
+Effects: 
+	- "crops_grow_slowly 1"
+visual_effects:
+    caster_location_while_casting:  ""
+    cast_location_while_casting: "red particles"
+    effect_location: ""

@@ -165,7 +165,7 @@ public class FileMgmt {
 
 	}
 
-	public static File extractImageFile(String fileName) throws Exception {
+	public static File unpackImageFile(String fileName) throws Exception {
 		/*
 		* Open JAR as ZIP
 		* I copied this closely from what dynmap was doing for its image files,

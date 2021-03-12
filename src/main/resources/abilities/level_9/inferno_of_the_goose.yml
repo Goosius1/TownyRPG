@@ -1,0 +1,17 @@
+type: "spell"
+cast_time_seconds: 7
+cooldown_duration_seconds: 420
+buff: true
+
+#When casting you specify what range exactly you want
+range: "50"
+area_of_effect: "30_metre_sphere"
+effect_duration_seconds: 45
+dispellable: false
+effects: 
+	- "slowness 3"
+	- "burning 3"
+visual_effects:
+    caster_location_while_casting:  "red_particles"
+    cast_location_while_casting: ""
+    effect_location: "red firework"

@@ -1,64 +1,113 @@
 package com.settings;
 
 import com.TownyRPG;
+import com.races.Race;
+import com.sun.deploy.security.SelectableSecurityManager;
 import com.utils.FileMgmt;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Settings {
-	private static com.settings.CommentedConfiguration config, newConfig;
+	private static CommentedConfiguration config, newConfig;
 	private static File battleIconFile;
-	public static final String BATTLE_BANNER_FILE_NAME = "crossedswords.png";
+	public static final String BATTLE_BANNER_FILE_NAME = "races/dwarf/dwarf.png";
+	//Todo - Load in the race icon files here  (For the dynmap)
+
+	private static List<Race> races = new ArrayList<>();
+
+	public static List<Race> getRaces() {
+		return races;
+	}
 
 	public static boolean loadSettingsAndLang() {
 		TownyRPG rpg = TownyRPG.getTownyRPG();
-		boolean loadSuccessFlag = true;
 
-		try {
-			Settings.loadConfig(rpg.getDataFolder().getPath() + File.separator + "config.yml", rpg.getVersion());
-		} catch (Exception e) {
-            System.err.println(rpg.prefix + "Config.yml failed to load! Disabling!");
-			loadSuccessFlag = false;
-        }
+		boolean configLoadSuccess = loadConfig(rpg);
+		boolean languageLoadSuccess = loadLanguage(rpg);
+
 
 		// Some list variables do not reload upon loadConfig.
 		TownyRPGSettings.resetSpecialCaseVariables();
-		
-		try {
-			Translation.loadLanguage(rpg.getDataFolder().getPath() + File.separator, "english.yml");
-		} catch (Exception e) {
-	        System.err.println(TownyRPG.prefix + "Language file failed to load! Disabling!");
-			loadSuccessFlag = false;
-	    }
 
-		//Extract images
-		try {
-			battleIconFile = FileMgmt.extractImageFile(BATTLE_BANNER_FILE_NAME);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println(SiegeWar.prefix + "Could not load images! Disabling!");
-			loadSuccessFlag = false;
-		}
+
+		boolean racesLoadSuccess = loadRaces(rpg);
+
+		//Unpack class files and load class data
+
+		//Unpack abilities files and load abilities data
+
+
+
 
 		//Schedule next battle session
-		try {
-			SiegeWarBattleSessionUtil.scheduleNextBattleSession();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println(SiegeWar.prefix + "Problem Scheduling Battle Session! Disabling!");
-			loadSuccessFlag = false;
-		}
+		//try {
+		//	SiegeWarBattleSessionUtil.scheduleNextBattleSession();
+		//} catch (Exception e) {
+		//	e.printStackTrace();
+	//		System.err.println(TownyRPG.prefix + "Problem Scheduling Battle Session! Disabling!");
+		//	loadSuccessFlag = false;
+		//}
 
-		return loadSuccessFlag;
+		return configLoadSuccess && languageLoadSuccess && racesLoadSuccess;
 	}
-	
+
+	private static boolean loadConfig(TownyRPG rpg) {
+		//Load config.yml
+		try {
+			loadConfig(rpg.getDataFolder().getPath() + File.separator + "config.yml", rpg.getVersion());
+			return true;
+		} catch (Exception e) {
+			System.err.println(TownyRPG.prefix + "Config.yml failed to load! Disabling!");
+			return false;
+		}
+	}
+
+	private static boolean loadLanguage(TownyRPG rpg) {
+	//Load languages
+		try {
+			Translation.loadLanguage(rpg.getDataFolder().getPath() + File.separator, "english.yml");
+			return true;
+		} catch (Exception e) {
+			System.err.println(TownyRPG.prefix + "Language file failed to load! Disabling!");
+			return false;
+		}
+	}
+
+
+	/**
+	 * NOTE: Here we go into safe mode if some data is incorrect.
+	 *
+	 * @param rpg
+	 * @return
+	 */
+	private static boolean loadRaces(TownyRPG rpg) {
+		//Unpack race files & load race data
+		races.add(new Race());
+
+		//Unpack all race images
+		for(Race race: races) {
+			try {
+				File raceIconFile = FileMgmt.unpackImageFile(race.getIconFileName());
+				race.setIconFile(raceIconFile);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.err.println(TownyRPG.prefix + "Problem unpacking image for race " + race.getName() + ". Disabling!");
+				return false;
+			}
+		}
+		return true;
+	}
+
+
 	public static void loadConfig(String filepath, String version) throws Exception {
 		if (FileMgmt.checkOrCreateFile(filepath)) {
 			File file = new File(filepath);
 
 			// read the config.yml into memory
-			config = new com.settings.CommentedConfiguration(file);
+			config = new CommentedConfiguration(file);
 			if (!config.load())
 				throw new IOException("Failed to load Config!");
 
@@ -95,7 +144,7 @@ public class Settings {
 	 */
 	private static void setDefaults(String version, File file) {
 
-		newConfig = new com.settings.CommentedConfiguration(file);
+		newConfig = new CommentedConfiguration(file);
 		newConfig.load();
 
 		for (com.settings.ConfigNodes root : com.settings.ConfigNodes.values()) {

@@ -1,0 +1,14 @@
+type: "ability"
+buff: true    
+Cast_time_seconds: 3
+Range: 0
+Are_of_effect: "self"
+duration_seconds: 20
+cooldown_duration: 180
+dispellable: false
+Effects: 
+	- "invisibility 3"
+visual_effects:
+    caster_location_while_casting:  ""
+    cast_location_while_casting: ""
+    effect_location: ""
